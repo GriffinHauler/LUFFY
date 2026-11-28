@@ -1,7 +1,9 @@
 name: read-files
 
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - tmp-read-files
 
 jobs:
   read:
