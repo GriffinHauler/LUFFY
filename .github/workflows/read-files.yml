@@ -12,27 +12,13 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Dump repository contents for inspection
+      - name: Verify pushed README on dev
         run: |
-          echo "=====GREP_TODO_DEV_BEGIN====="
-          git grep -n -i "todo" origin/dev -- '*.py' || true
-          echo "=====GREP_TODO_DEV_END====="
-          echo "=====GREP_TODO_MAIN_BEGIN====="
-          git grep -n -i "todo" origin/main -- '*.py' || true
-          echo "=====GREP_TODO_MAIN_END====="
-          echo "=====DIFF_STAT_BEGIN====="
-          git diff --stat origin/main origin/dev
-          echo "=====DIFF_STAT_END====="
-          echo "=====DIFF_FULL_BEGIN====="
-          git diff origin/main origin/dev
-          echo "=====DIFF_FULL_END====="
-          echo "=====README_BEGIN====="
-          git show origin/dev:README.md
-          echo "=====README_END====="
-          echo "=====PROTOCOL_DEV_BEGIN====="
-          git show origin/dev:luffy/verl/verl/protocol.py | cat -n
-          echo "=====PROTOCOL_DEV_END====="
-          echo "=====UTILS_DEV_BEGIN====="
-          git show origin/dev:luffy/deepscaler/utils.py | cat -n
-          echo "=====UTILS_DEV_END====="
+          echo "=====DEV_README_HASH_BEGIN====="
+          git show origin/dev:README.md | sha256sum
+          git show origin/dev:README.md | wc -c
+          echo "=====DEV_README_HASH_END====="
+          echo "=====README_TODO_SECTION_BEGIN====="
+          git show origin/dev:README.md | sed -n '/### 📝 Complete TODO List/,/## 🤝 Contributing/p'
+          echo "=====README_TODO_SECTION_END====="
           echo "=====ALL_DONE====="
